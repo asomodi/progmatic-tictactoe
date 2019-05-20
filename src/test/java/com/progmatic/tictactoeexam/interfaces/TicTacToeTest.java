@@ -5,7 +5,10 @@
  */
 package com.progmatic.tictactoeexam.interfaces;
 
+import com.progmatic.tictactoeexam.BoardImpl;
 import com.progmatic.tictactoeexam.Cell;
+import com.progmatic.tictactoeexam.SimplePlayer;
+import com.progmatic.tictactoeexam.VictoryAwarePlayer;
 import com.progmatic.tictactoeexam.exceptions.CellException;
 import com.progmatic.tictactoeexam.enums.PlayerType;
 import java.util.List;
@@ -45,7 +48,7 @@ public class TicTacToeTest {
             }
         }
     }
-    
+
     @Test
     public void testGetCell2() throws Exception {
         String[][] aBoard = {
@@ -61,21 +64,21 @@ public class TicTacToeTest {
         assertEquals(PlayerType.EMPTY, b.getCell(1, 2));
         assertEquals(PlayerType.EMPTY, b.getCell(2, 0));
         assertEquals(PlayerType.O, b.getCell(2, 1));
-        assertEquals(PlayerType.EMPTY, b.getCell(2, 2));    
+        assertEquals(PlayerType.EMPTY, b.getCell(2, 2));
     }
-    
+
     @Test(expected = CellException.class)
     public void testGetFromNonExistentCell() throws Exception {
         Board b = getBoardImpl();
-        b.getCell(0, 3); 
+        b.getCell(0, 3);
     }
-    
+
     @Test(expected = CellException.class)
     public void testPutToWrongPlace() throws Exception {
         Board b = getBoardImpl();
-        b.put(new Cell(3, 0)); 
+        b.put(new Cell(3, 0));
     }
-    
+
     @Test(expected = CellException.class)
     public void testPutAlreadyOccupied() throws Exception {
         String[][] aBoard = {
@@ -83,7 +86,7 @@ public class TicTacToeTest {
             {" ", "X", " "},
             {" ", "O", " "}};
         Board b = fromString(aBoard);
-        b.put(new Cell(1, 1)); 
+        b.put(new Cell(1, 1));
     }
 
     @Test
@@ -96,7 +99,7 @@ public class TicTacToeTest {
         List<Cell> emptyCells = b.emptyCells();
         assertEquals(6, emptyCells.size());
     }
-    
+
     @Test
     public void testHasNoEmptyCells() throws CellException {
         String[][] aBoard = {
@@ -107,7 +110,7 @@ public class TicTacToeTest {
         List<Cell> emptyCells = b.emptyCells();
         assertEquals(0, emptyCells.size());
     }
-    
+
     @Test
     public void testHasWon() throws CellException {
         String[][] aBoard = {
@@ -118,7 +121,7 @@ public class TicTacToeTest {
         assertEquals(false, b.hasWon(PlayerType.X));
         assertEquals(false, b.hasWon(PlayerType.O));
     }
-    
+
     @Test
     public void testHasWon2() throws CellException {
         String[][] aBoard = {
@@ -129,7 +132,7 @@ public class TicTacToeTest {
         assertEquals(true, b.hasWon(PlayerType.X));
         assertEquals(false, b.hasWon(PlayerType.O));
     }
-    
+
     @Test
     public void testHasWon3() throws CellException {
         String[][] aBoard = {
@@ -140,7 +143,7 @@ public class TicTacToeTest {
         assertEquals(false, b.hasWon(PlayerType.X));
         assertEquals(true, b.hasWon(PlayerType.O));
     }
-    
+
     @Test
     public void testHasWon4() throws CellException {
         String[][] aBoard = {
@@ -151,7 +154,7 @@ public class TicTacToeTest {
         assertEquals(true, b.hasWon(PlayerType.X));
         assertEquals(false, b.hasWon(PlayerType.O));
     }
-    
+
     @Test
     public void testHasWon5() throws CellException {
         String[][] aBoard = {
@@ -162,7 +165,7 @@ public class TicTacToeTest {
         assertEquals(false, b.hasWon(PlayerType.X));
         assertEquals(true, b.hasWon(PlayerType.O));
     }
-    
+
     @Test
     public void testSimplePlayer() throws CellException {
         String[][] aBoard = {
@@ -176,8 +179,7 @@ public class TicTacToeTest {
         assertEquals(1, nextMove.getRow());
         assertEquals(PlayerType.O, nextMove.getCellsPlayer());
     }
-    
-    
+
     @Test
     public void testPlayerSDoNotModifyBoard() throws CellException {
         String[][] aBoard = {
@@ -193,7 +195,7 @@ public class TicTacToeTest {
         p.nextMove(b);
         assertSameBoard(b, b2);
     }
-    
+
     @Test
     public void testSimplePlayerReturnsNullWhenNoEmtpyCellExists() throws CellException {
         String[][] aBoard = {
@@ -205,7 +207,7 @@ public class TicTacToeTest {
         Cell nextMove = p.nextMove(b);
         assertNull(nextMove);
     }
-    
+
     @Test
     public void testVictoryAwarePlayer() throws CellException {
         String[][] aBoard = {
@@ -219,7 +221,7 @@ public class TicTacToeTest {
         assertEquals(1, nextMove.getRow());
         assertEquals(PlayerType.O, nextMove.getCellsPlayer());
     }
-    
+
     @Test
     public void testVictoryAwarePlayer2() throws CellException {
         String[][] aBoard = {
@@ -234,7 +236,6 @@ public class TicTacToeTest {
         assertEquals(PlayerType.O, nextMove.getCellsPlayer());
     }
 
-    
     private Board fromString(String[][] strArr) throws CellException {
         Board ret = getBoardImpl();
         for (int i = 0; i < 3; i++) {
@@ -260,8 +261,8 @@ public class TicTacToeTest {
         }
         return ret;
     }
-    
-    private void assertSameBoard(Board b1, Board b2) throws CellException{
+
+    private void assertSameBoard(Board b1, Board b2) throws CellException {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 PlayerType cell1 = b1.getCell(i, j);
@@ -270,20 +271,20 @@ public class TicTacToeTest {
             }
         }
     }
-    
+
     //TODO
-    private Board getBoardImpl(){
-        return null;
+    private Board getBoardImpl() {
+        return new BoardImpl();
     }
-    
+
     //TODO
-    private Player simplePlayerImpl(PlayerType p){
-        return null;
+    private Player simplePlayerImpl(PlayerType p) {
+        return new SimplePlayer(p);
     }
-    
+
     //TODO
-    private Player victoryAwarePlayerImpl(PlayerType p){
-        return null;
+    private Player victoryAwarePlayerImpl(PlayerType p) {
+        return new VictoryAwarePlayer(p);
     }
 
 }
